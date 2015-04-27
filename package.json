@@ -1,0 +1,22 @@
+{
+    "name"            : "gulpbase",
+    "version"         : "0.1.0",
+    "description"     : "",
+    "main"            : "index.js",
+    "scripts"         : {
+        "test" : "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository"      : {
+        "type" : "git",
+        "url"  : "https://github.com/apps-libX/gulpbase.git"
+    },
+    "author"          : "",
+    "license"         : "ISC",
+    "bugs"            : {
+        "url" : "https://github.com/apps-libX/gulpbase/issues"
+    },
+    "homepage"        : "https://github.com/apps-libX/gulpbase",
+    "devDependencies" : {
+        "gulp" : "git://github.com/gulpjs/gulp.git#4.0"
+    }
+}

@@ -13,14 +13,16 @@
 
 'use strict';
 
-var gulp   = require('gulp'),
+var gulp     = require('gulp'),
     // Styles
-    concat = require('gulp-concat'),
-    myth   = require('gulp-myth'),
-    sass   = require('gulp-sass'),
+    concat   = require('gulp-concat'),
+    myth     = require('gulp-myth'),
+    sass     = require('gulp-sass'),
     // Scripts
-    uglify = require('gulp-uglify'),
-    jshint = require('gulp-jshint');
+    uglify   = require('gulp-uglify'),
+    jshint   = require('gulp-jshint'),
+    // Images
+    imagemin = require('gulp-imagemin');
 
 // Styles /myth
 gulp.task('myth', function () {
@@ -45,5 +47,12 @@ gulp.task('scripts', function () {
         .pipe(concat('all.js'))
         .pipe(uglify())
         .pipe(gulp.dest('dist'));
+});
+
+// Images
+gulp.task('images', function() {
+    return gulp.src('app/img/*')
+        .pipe(imagemin())
+        .pipe(gulp.dest('dist/img'));
 });
 

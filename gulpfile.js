@@ -5,14 +5,22 @@
 /**
  * npm install gulp gulp-concat gulp-myth --save-dev
  * npm install gulp-sass --save-dev
+ *
+ * npm install gulp-uglify gulp-jshint --save-dev
+ *
+ * npm install gulp-imagemin --save-dev
  */
 
 'use strict';
 
 var gulp   = require('gulp'),
+    // Styles
     concat = require('gulp-concat'),
     myth   = require('gulp-myth'),
-    sass   = require('gulp-sass');
+    sass   = require('gulp-sass'),
+    // Scripts
+    uglify = require('gulp-uglify'),
+    jshint = require('gulp-jshint');
 
 // Styles /myth
 gulp.task('myth', function () {
@@ -28,3 +36,14 @@ gulp.task('sass', function () {
         .pipe(sass())
         .pipe(gulp.dest('dist'));
 });
+
+// Scripts
+gulp.task('scripts', function () {
+    return gulp.src('app/js/*.js')
+        .pipe(jshint())
+        .pipe(jshint.reporter('default'))
+        .pipe(concat('all.js'))
+        .pipe(uglify())
+        .pipe(gulp.dest('dist'));
+});
+

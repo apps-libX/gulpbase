@@ -9,6 +9,10 @@
  * npm install gulp-uglify gulp-jshint --save-dev
  *
  * npm install gulp-imagemin --save-dev
+ *
+ * npm install connect serve-static --save-dev
+ *
+ * npm install browser-sync --save-dev
  */
 
 'use strict';

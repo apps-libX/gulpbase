@@ -17,16 +17,21 @@
 
 'use strict';
 
-var gulp     = require('gulp'),
+var gulp        = require('gulp'),
     // Styles
-    concat   = require('gulp-concat'),
-    myth     = require('gulp-myth'),
-    sass     = require('gulp-sass'),
+    concat      = require('gulp-concat'),
+    myth        = require('gulp-myth'),
+    sass        = require('gulp-sass'),
     // Scripts
-    uglify   = require('gulp-uglify'),
-    jshint   = require('gulp-jshint'),
+    uglify      = require('gulp-uglify'),
+    jshint      = require('gulp-jshint'),
     // Images
-    imagemin = require('gulp-imagemin');
+    imagemin    = require('gulp-imagemin'),
+    // Server
+    connect     = require('connect'),
+    serve       = require('serve-static'),
+    // browser sync
+    browsersync = require('browser-sync');
 
 // Styles /myth
 gulp.task('myth', function () {
@@ -60,17 +65,36 @@ gulp.task('images', function () {
         .pipe(gulp.dest('dist/img'));
 });
 
-// Watch task
+// Server
+gulp.task('server', function () {
+    return connect().use(serve(__dirname))
+        .listen(8080)
+        .on('listening', function () {
+            console.log('Server Running: View at http://localhost:8080');
+        });
+});
+
+// BrowserSync task
+gulp.task('browsersync', function (cb) {
+    return browsersync({
+        server : {
+            baseDir : './'
+        }
+    }, cb);
+});
+
+// Watch Task
 gulp.task('watch', function () {
-    gulp.watch('app/css/*.css', 'styles');
-    gulp.watch('app/js/*.js', 'scripts');
-    gulp.watch('app/img/*', 'images');
+    gulp.watch('app/css/*.css', gulp.series('styles', browsersync.reload));
+    gulp.watch('app/js/*.js', gulp.series('scripts', browsersync.reload));
+    gulp.watch('app/img/*', gulp.series('images', browsersync.reload));
 });
 
 // Watch /Parallel
 gulp.watch('app/css/*.css', gulp.parallel('firstTask', 'secondTask'));
+
 // Watch /Series
 gulp.watch('app/js/*.js', gulp.series('thirdTask', 'fourthTask'));
 
-// Default
-gulp.task('default', gulp.parallel('styles', 'scripts', 'images', 'watch'));
+// Default Task
+gulp.task('default', gulp.parallel('styles', 'scripts', 'images', 'browsersync', 'watch'));

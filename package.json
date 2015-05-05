@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/apps-libX/gulpbase",
   "devDependencies": {
+    "beeper": "^1.0.0",
     "browser-sync": "^2.6.9",
     "browserify": "^9.0.8",
     "connect": "^3.3.5",

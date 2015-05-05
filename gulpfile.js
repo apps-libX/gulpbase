@@ -17,6 +17,8 @@
  * npm install browserify vinyl-source-stream --save-dev
  *
  * npm install gulp-plumber --save-dev
+ *
+ * npm install beeper --save-dev
  */
 
 'use strict';
@@ -40,12 +42,22 @@ var gulp        = require('gulp'),
     browserify  = require('browserify'),
     source      = require('vinyl-source-stream'),
     // Error handling /Gulp-plumber
-    plumber = require('gulp-plumber'); // Added;
+    plumber     = require('gulp-plumber'),
+    // Beep ..beep
+    beeper      = require('beeper');
+
+// Error Helper /Beep ..beep
+function onError(err) {
+    beeper();
+    console.log(err);
+}
 
 // Styles /myth
 gulp.task('myth', function () {
     return gulp.src('app/css/*.css')
-        .pipe(plumber())
+        .pipe(plumber({
+            errorHandler: onError
+        }))
         .pipe(concat('all.css'))
         .pipe(myth())
         .pipe(gulp.dest('dist'));
@@ -54,7 +66,9 @@ gulp.task('myth', function () {
 // Styles /sass
 gulp.task('sass', function () {
     return gulp.src('app/css/*.scss')
-        .pipe(plumber())
+        .pipe(plumber({
+            errorHandler: onError
+        }))
         .pipe(sass())
         .pipe(gulp.dest('dist'));
 });

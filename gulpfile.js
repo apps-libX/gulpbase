@@ -13,6 +13,8 @@
  * npm install connect serve-static --save-dev
  *
  * npm install browser-sync --save-dev
+ *
+ * npm install browserify vinyl-source-stream --save-dev
  */
 
 'use strict';
@@ -30,8 +32,11 @@ var gulp        = require('gulp'),
     // Server
     connect     = require('connect'),
     serve       = require('serve-static'),
-    // browser sync
-    browsersync = require('browser-sync');
+    // Browser sync
+    browsersync = require('browser-sync'),
+    // Browserify
+    browserify  = require('browserify'),
+    source      = require('vinyl-source-stream');
 
 // Styles /myth
 gulp.task('myth', function () {
@@ -81,6 +86,14 @@ gulp.task('browsersync', function (cb) {
             baseDir : './'
         }
     }, cb);
+});
+
+// Browserify Task
+gulp.task('browserify', function () {
+    return browserify('./app/js/app.js')
+        .bundle()
+        .pipe(source('bundle.js'))
+        .pipe(gulp.dest('dist'));
 });
 
 // Watch Task

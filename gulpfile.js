@@ -19,6 +19,8 @@
  * npm install gulp-plumber --save-dev
  *
  * npm install beeper --save-dev
+ *
+ * npm install del --save-dev
  */
 
 'use strict';
@@ -44,7 +46,9 @@ var gulp        = require('gulp'),
     // Error handling /Gulp-plumber
     plumber     = require('gulp-plumber'),
     // Beep ..beep
-    beeper      = require('beeper');
+    beeper      = require('beeper'),
+    // Delete
+    del         = require('del');
 
 // Error Helper /Beep ..beep
 function onError(err) {
@@ -56,7 +60,7 @@ function onError(err) {
 gulp.task('myth', function () {
     return gulp.src('app/css/*.css')
         .pipe(plumber({
-            errorHandler: onError
+            errorHandler : onError
         }))
         .pipe(concat('all.css'))
         .pipe(myth())
@@ -67,7 +71,7 @@ gulp.task('myth', function () {
 gulp.task('sass', function () {
     return gulp.src('app/css/*.scss')
         .pipe(plumber({
-            errorHandler: onError
+            errorHandler : onError
         }))
         .pipe(sass())
         .pipe(gulp.dest('dist'));
@@ -116,6 +120,26 @@ gulp.task('browserify', function () {
         .pipe(gulp.dest('dist'));
 });
 
+// Clean task
+// Delete entire folder
+//gulp.task('clean', function (cb) {
+//    del(['dist'], cb);
+//});
+//
+//// or
+// using glob leave the folder intact
+//
+//gulp.task('clean', function (cb) {
+//    del(['dist/*'], cb);
+//});
+//
+// or
+// delete all files inside the dist folder except a specific file
+//gulp.task('clean', function (cb) {
+//    del(['dist/*', '!dist/site.css'], cb);
+//});
+
+
 // Watch Task
 gulp.task('watch', function () {
     gulp.watch('app/css/*.css', gulp.series('styles', browsersync.reload));
@@ -131,3 +155,11 @@ gulp.watch('app/js/*.js', gulp.series('thirdTask', 'fourthTask'));
 
 // Default Task
 gulp.task('default', gulp.parallel('styles', 'scripts', 'images', 'browsersync', 'watch'));
+
+// watch series with clean
+// Watch Task
+//gulp.task('watch', function () {
+//    gulp.watch('app/css/*.css', gulp.series('clean', 'styles', browsersync.reload));
+//    gulp.watch('app/js/*.js', gulp.series('clean', 'scripts', browsersync.reload));
+//    gulp.watch('app/img/*', gulp.series('clean', 'images', browsersync.reload));
+//});

@@ -15,6 +15,8 @@
  * npm install browser-sync --save-dev
  *
  * npm install browserify vinyl-source-stream --save-dev
+ *
+ * npm install gulp-plumber --save-dev
  */
 
 'use strict';
@@ -36,11 +38,14 @@ var gulp        = require('gulp'),
     browsersync = require('browser-sync'),
     // Browserify
     browserify  = require('browserify'),
-    source      = require('vinyl-source-stream');
+    source      = require('vinyl-source-stream'),
+    // Error handling /Gulp-plumber
+    plumber = require('gulp-plumber'); // Added;
 
 // Styles /myth
 gulp.task('myth', function () {
     return gulp.src('app/css/*.css')
+        .pipe(plumber())
         .pipe(concat('all.css'))
         .pipe(myth())
         .pipe(gulp.dest('dist'));
@@ -49,6 +54,7 @@ gulp.task('myth', function () {
 // Styles /sass
 gulp.task('sass', function () {
     return gulp.src('app/css/*.scss')
+        .pipe(plumber())
         .pipe(sass())
         .pipe(gulp.dest('dist'));
 });
